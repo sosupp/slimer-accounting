@@ -61,38 +61,53 @@ class TransactionBuilderService
 
         return DB::transaction(function () {
 
-            $transaction = JournalEntry::create([
+            $entry = JournalEntry::create([
                 ...$this->data,
                 'status' => 'posted',
                 'posted_at' => now(),
             ]);
 
             foreach ($this->lines as $line) {
-                $transaction->lines()->create($line);
+                $entry->lines()->create($line);
             }
 
-            return $transaction;
+            return $entry;
         });
     }
 
 
-    public function reverse(JournalEntry $transaction)
+    public function reverse(JournalEntry $entry)
     {
-        if ($transaction->status !== 'posted') {
+        if ($entry->status !== 'posted') {
             throw new Exception('Only posted entries can be reversed');
         }
 
         $this->create([
             'date' => now(),
-            'description' => 'Reversal of ' . $transaction->id,
-            'reversed_transaction_id' => $transaction->id
+            'description' => 'Reversal of ' . $entry->id,
+            'reversed_transaction_id' => $entry->id
         ]);
 
-        foreach ($transaction->lines as $line) {
+        foreach ($entry->lines as $line) {
             $this->debit($line->account_id, $line->credit);
             $this->credit($line->account_id, $line->debit);
         }
 
         return $this->post();
+
+        // $builder = new TransactionBuilder();
+
+        // $builder->create([
+        //     'date' => now(),
+        //     'description' => 'Reversal of Entry #' . $entry->id,
+        //     'reversed_entry_id' => $entry->id,
+        // ]);
+
+        // foreach ($entry->lines as $line) {
+        //     $builder->debit($line->account_id, $line->credit);
+        //     $builder->credit($line->account_id, $line->debit);
+        // }
+
+        // return $builder->post();
     }
 }

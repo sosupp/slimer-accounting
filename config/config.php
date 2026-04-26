@@ -9,5 +9,8 @@ return [
         'entry_model' => \Sosupp\SlimerAccounting\Models\JournalEntry::class,
     ],
 
+    'database' => [
+        'migration_path' => null,
+    ]
     
 ];

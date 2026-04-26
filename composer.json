@@ -48,7 +48,7 @@
         "Sosupp\\SlimerAccounting\\SlimerAccountingServiceProvider"
       ],
       "aliases": {
-        "SlimerAccounting": "Sosupp\\SlimerAccounting\\SlimerAccountingFacade"
+        "Accounting": "Sosupp\\SlimerAccounting\\Facades\\Accounting"
       }
     }
   }
