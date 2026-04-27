@@ -26,7 +26,10 @@ class AccountingInstall extends Command
         $this->info('Adding migration files');
 
         $this->call('vendor:publish', [
-            '--tag' => 'slimer-accounting-migrations'
+            '--tag' => [
+                'slimer-accounting-migrations',
+                'slimer-accounting-seeders'
+            ]
         ]);
 
     }

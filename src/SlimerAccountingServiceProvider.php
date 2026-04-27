@@ -34,6 +34,11 @@ class AccountingServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('slimeraccounting.php'),
             ], 'slimer-accounting-config');
+
+            $this->publishes([
+                __DIR__.'/../../database/seeders/ChartOfAccountsSeeder.php' =>
+                    database_path('seeders/ChartOfAccountsSeeder.php'),
+            ], 'slimer-accounting-seeders');
         }
     }
 }
