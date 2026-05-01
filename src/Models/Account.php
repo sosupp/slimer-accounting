@@ -22,4 +22,9 @@ class Account extends Model
     {
         return $this->hasMany(JournalEntryLine::class);
     }
+
+    public static function findByCode(string $code)
+    {
+        return static::where('code', $code)->firstOrFail();
+    }
 }

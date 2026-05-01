@@ -32,5 +32,8 @@ class AccountingInstall extends Command
             ]
         ]);
 
+        $this->info('Inserting Chart Of Accounts Seeder');
+        $this->call('db:seed --class=ChartOfAccountsSeeder');
+
     }
 }
