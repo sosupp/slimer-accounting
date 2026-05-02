@@ -17,7 +17,7 @@ class TransactionBuilderService
         return $this;
     }
 
-    public function debit($accountId, $amount, $description = null)
+    public function debit(string|int $accountId, float|int|string $amount, $description = null)
     {
         $this->lines[] = [
             'account_id' => $accountId,
@@ -29,7 +29,7 @@ class TransactionBuilderService
         return $this;
     }
 
-    public function credit($accountId, $amount, $description = null)
+    public function credit(string|int $accountId, float|int|string $amount, $description = null)
     {
         $this->lines[] = [
             'account_id' => $accountId,
