@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->uuid('uid')->unique();
             $table->string('name');
             $table->string('type')->nullable();
+            $table->string('description')->nullable();
             
             $table->softDeletes();
             $table->timestamps();

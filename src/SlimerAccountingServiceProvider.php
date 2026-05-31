@@ -29,7 +29,7 @@ class SlimerAccountingServiceProvider extends ServiceProvider
     {
 
         if($this->app->runningInConsole()){
-            $path = config('slimeronboarding.database.migration_path');
+            $path = config('slimeraccounting.database.migration_path');
             $usePath = $path ? 'migrations/'.$path : 'migrations';
 
             $this->publishes([

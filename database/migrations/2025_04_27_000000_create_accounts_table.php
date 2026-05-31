@@ -11,15 +11,17 @@ return new class extends Migration {
             $table->id();
             $table->uuid('uid')->unique();
 
-            $table->string('name');
+            $table->foreignId('parent_id')->nullable()
+            ->constrained('accounts')->nullOnDelete();
+
+            $table->string('name')->unique();
+            $table->string('key')->unique()->nullable();
             $table->string('code')->nullable();
 
             $table->enum('type', [
                 'asset', 'liability', 'equity', 'income', 'expense'
             ]);
-
-            $table->foreignId('parent_id')->nullable()->constrained('accounts')->nullOnDelete();
-
+            
             $table->boolean('is_active')->default(true);
 
             $table->softDeletes();

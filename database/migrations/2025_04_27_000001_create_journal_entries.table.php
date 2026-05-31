@@ -10,16 +10,17 @@ return new class extends Migration {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->id();
             $table->uuid('uid')->unique();
-            $table->foreignId('reversed_entry_id')
-                ->nullable()
-                ->constrained('journal_entries')
-                ->nullOnDelete();
+            $table->foreignId('journal_id')->nullable()->constrained();
+
+            $table->foreignId('reversed_entry_id')->nullable()
+            ->constrained('journal_entries')
+            ->nullOnDelete();
 
             $table->string('reference')->nullable();
             $table->text('description')->nullable();
 
-            $table->date('date');
-            $table->foreignId('journal_id')->nullable()->constrained();
+            $table->date('date')->index();
+           
 
             $table->enum('status', ['draft', 'posted', 'reversed'])->default('draft');
 

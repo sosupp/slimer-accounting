@@ -42,4 +42,22 @@ class BalanceSheetService
             'balanced' => $assets === ($liabilities + $equity),
         ];
     }
+
+    protected function calculateRetainedEarnings($trialAccounts)
+    {
+        $income = 0;
+        $expenses = 0;
+
+        foreach ($trialAccounts as $account) {
+            if ($account['type'] === 'income') {
+                $income += $account['credit'];
+            }
+
+            if ($account['type'] === 'expense') {
+                $expenses += $account['debit'];
+            }
+        }
+
+        return $income - $expenses;
+    }
 }
