@@ -30,7 +30,7 @@ class LedgerService
 
                 if ($fromDate) {
                     $q->whereDate(
-                        'transaction_date',
+                        'date',
                         '>=',
                         $fromDate
                     );
@@ -38,7 +38,7 @@ class LedgerService
 
                 if ($toDate) {
                     $q->whereDate(
-                        'transaction_date',
+                        'date',
                         '<=',
                         $toDate
                     );
@@ -67,7 +67,7 @@ class LedgerService
             ->whereHas('entry', function ($q) use ($fromDate) {
                 $q->where('status', 'posted')
                   ->whereDate(
-                      'transaction_date',
+                      'date',
                       '<',
                       $fromDate
                   );
@@ -109,7 +109,7 @@ class LedgerService
             $runningBalance -= $line->credit;
 
             $records[] = [
-                'date' => $line->entry->transaction_date,
+                'date' => $line->entry->date,
                 'reference' => $line->entry->reference,
                 'journal' => $line->entry->journal->name,
                 'description' => $line->description

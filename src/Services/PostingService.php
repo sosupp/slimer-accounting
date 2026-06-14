@@ -14,7 +14,7 @@ class PostingService
 
             $entry = JournalEntry::create([
                 'journal_id' => $data['journal_id'],
-                'transaction_date' => $data['transaction_date'],
+                'date' => $data['date'],
                 'reference' => $data['reference'],
                 'description' => $data['description'],
                 'status' => 'posted'
