@@ -41,6 +41,7 @@ enum AccountCode: string
     case UTILITIES_EXPENSE = '5400';
     case TRANSPORT_EXPENSE = '5500';
     case SOFTWARE_EXPENSE = '5600';
+    case OFFICE_SUPPLIES = '5700';
 
     public function account(): Account
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -38,25 +39,25 @@ class ChartOfAccountsSeeder extends Seeder
 
         // INCOME
         $income = $this->createAccount('Income', '4000', 'income');
-
         $this->createAccount('Sales Revenue', '4100', 'income', $income);
         $this->createAccount('Service Revenue', '4200', 'income', $income);
 
         // EXPENSES
         $expenses = $this->createAccount('Expenses', '5000', 'expense');
-
         $this->createAccount('Cost of Goods Sold', '5100', 'expense', $expenses);
         $this->createAccount('Salaries Expense', '5200', 'expense', $expenses);
         $this->createAccount('Rent Expense', '5300', 'expense', $expenses);
         $this->createAccount('Utilities Expense', '5400', 'expense', $expenses);
         $this->createAccount('Transport Expense', '5500', 'expense', $expenses);
+        $this->createAccount('Software Expense', '5600', 'expense', $expenses);
+        $this->createAccount('Office Supplies', '5600', 'expense', $expenses);
     }
 
     protected function createAccount($name, $code, $type, $parent = null)
     {
         return Account::create([
             'uid' => Str::uuid(),
-            'name' => $name,
+            'name' => Str::lower($name),
             'code' => $code,
             'type' => $type,
             'parent_id' => $parent?->id,

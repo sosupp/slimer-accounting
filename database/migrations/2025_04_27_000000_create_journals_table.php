@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uid')->unique();
+            $table->uuid('uid')->unique()->nullable();
             $table->string('name');
             $table->string('type')->nullable();
             $table->string('description')->nullable();
