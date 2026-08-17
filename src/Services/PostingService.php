@@ -14,10 +14,13 @@ class PostingService
 
             $entry = JournalEntry::create([
                 'journal_id' => $data['journal_id'],
+                'branch_id' => $data['branch_id' ?? null],
+                'branch_uid' => $data['branch_uid'] ?? null,
                 'date' => $data['date'],
                 'reference' => $data['reference'],
                 'description' => $data['description'],
-                'status' => 'posted'
+                'status' => 'posted',
+                'posted_at' => now(),
             ]);
 
             $totalDebit = 0;
@@ -30,7 +33,7 @@ class PostingService
                     'account_id' => $line['account_id'],
                     'debit' => $line['debit'],
                     'credit' => $line['credit'],
-                    'description' => $line['description'] ?? null
+                    'description' => $line['description'] ?? null,
                 ]);
 
                 $totalDebit += $line['debit'];

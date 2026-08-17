@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uid')->unique();
+            $table->uuid('uid')->unique()->nullable();
 
             $table->foreignId('parent_id')->nullable()
             ->constrained('accounts')->nullOnDelete();
@@ -26,6 +26,8 @@ return new class extends Migration {
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['type', 'is_active']);
         });
     }
 

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('journal_entry_lines', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uid')->unique();
+            $table->uuid('uid')->unique()->nullable();
             $table->foreignId('journal_entry_id')
                 ->constrained()
                 ->cascadeOnDelete();
@@ -18,13 +18,15 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->decimal('debit', 15, 2)->default(0);
-            $table->decimal('credit', 15, 2)->default(0);
+            $table->decimal('debit', 15, 4)->default(0.0000);
+            $table->decimal('credit', 15, 4)->default(0.0000);
 
             $table->text('description')->nullable();
 
             $table->softDeletes();
-            $table->timestamps();   
+            $table->timestamps(); 
+            
+            $table->index(['account_id', 'journal_entry_id']);
         });
     }
 

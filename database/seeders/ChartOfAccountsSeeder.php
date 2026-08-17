@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Sosupp\SlimerAccounting\Models\Account;
+use Sosupp\SlimerAccounting\Models\Journal;
 
 class ChartOfAccountsSeeder extends Seeder
 {
@@ -51,17 +52,51 @@ class ChartOfAccountsSeeder extends Seeder
         $this->createAccount('Transport Expense', '5500', 'expense', $expenses);
         $this->createAccount('Software Expense', '5600', 'expense', $expenses);
         $this->createAccount('Office Supplies', '5600', 'expense', $expenses);
+
+        $this->defaultJournals();
     }
 
     protected function createAccount($name, $code, $type, $parent = null)
     {
-        return Account::create([
-            'uid' => Str::uuid(),
-            'name' => Str::lower($name),
-            'code' => $code,
-            'type' => $type,
-            'parent_id' => $parent?->id,
-            'is_active' => true,
-        ]);
+        return Account::firstOrCreate(
+            [
+                'code' => $code,
+            ],
+            [
+                'uid' => Str::uuid(),
+                'name' => Str::lower($name),
+                'type' => $type,
+                'parent_id' => $parent?->id,
+                'is_active' => true,
+            ]
+        );
+    }
+
+    protected function defaultJournals()
+    {
+        $journals = [
+            ['name' => 'cash payments journal', 'type' => ['expense', 'asset']],
+            ['name' => 'sales journal', 'type' => ['income']],
+            ['name' => 'cash receipts journal', 'type' => ['income', 'asset']],
+            ['name' => 'purchase journal', 'type' => ['expense', 'asset']],
+            ['name' => 'payroll journal', 'type' => ['expense']],
+            ['name' => 'general journal', 'type' => ['asset', 'liability', 'equity', 'income', 'expense']],
+        ];
+
+        foreach($journals as $journal){
+            $name = $journal['name'];
+
+            Journal::query()
+            ->updateOrCreate(
+                [
+                    'name' => $name,
+                ],
+                [
+                    'slug' => str($name)->slug(),
+                    'uid' => Str::uuid(),
+                    'type' => $journal['type']
+                ]
+            );
+        }
     }
 }

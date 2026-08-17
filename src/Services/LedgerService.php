@@ -7,10 +7,15 @@ use Sosupp\SlimerAccounting\Models\JournalEntryLine;
 class LedgerService
 {
     public function getAccountLedger(
-        int $accountId,
+        ?int $accountId = null,
         ?string $fromDate = null,
         ?string $toDate = null
     ) {
+
+        // if(is_null($accountId)){
+        //     return [];
+        // }
+
         $openingBalance = $this->calculateOpeningBalance(
             $accountId,
             $fromDate
@@ -55,7 +60,7 @@ class LedgerService
     }
 
     protected function calculateOpeningBalance(
-        int $accountId,
+        ?int $accountId,
         ?string $fromDate
     ) {
         if (!$fromDate) {
@@ -93,31 +98,44 @@ class LedgerService
         $records = [];
 
         // opening row
-        $records[] = [
-            'date' => null,
-            'reference' => null,
-            'journal' => null,
-            'description' => 'Opening Balance',
-            'debit' => null,
-            'credit' => null,
-            'balance' => $openingBalance
-        ];
+        // $records[] = [
+        //     'date' => null,
+        //     'reference' => null,
+        //     'journal' => null,
+        //     'description' => 'Opening Balance',
+        //     'debit' => null,
+        //     'credit' => null,
+        //     'balance' => $openingBalance
+        // ];
+
+        // foreach ($lines as $line) {
+
+        //     $runningBalance += $line->debit;
+        //     $runningBalance -= $line->credit;
+
+        //     $records[] = [
+        //         'date' => $line->entry->date,
+        //         'reference' => $line->entry->reference,
+        //         'journal' => $line->entry->journal->name,
+        //         'description' => $line->description
+        //             ?? $line->entry->description,
+        //         'debit' => $line->debit,
+        //         'credit' => $line->credit,
+        //         'balance' => $runningBalance
+        //     ];
+        // }
 
         foreach ($lines as $line) {
 
             $runningBalance += $line->debit;
             $runningBalance -= $line->credit;
 
-            $records[] = [
-                'date' => $line->entry->date,
-                'reference' => $line->entry->reference,
-                'journal' => $line->entry->journal->name,
-                'description' => $line->description
-                    ?? $line->entry->description,
-                'debit' => $line->debit,
-                'credit' => $line->credit,
-                'balance' => $runningBalance
-            ];
+            $line->running_balance = $runningBalance;
+            $line->transaction_date = $line->entry->transaction_date;
+            $line->reference = $line->entry->reference;
+            $line->journal_name = $line->entry->journal->name;
+
+            $records[] = $line;
         }
 
         return [

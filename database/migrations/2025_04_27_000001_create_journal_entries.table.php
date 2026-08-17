@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uid')->unique();
+            $table->uuid('uid')->unique()->nullable();
             $table->foreignId('journal_id')->nullable()->constrained();
 
             $table->foreignId('reversed_entry_id')->nullable()
@@ -22,11 +22,15 @@ return new class extends Migration {
             $table->date('date')->index();
            
 
-            $table->enum('status', ['draft', 'posted', 'reversed'])->default('draft');
+            $table->enum('status', ['draft', 'posted', 'reversed'])
+            ->default('draft');
 
             $table->timestamp('posted_at')->nullable();
 
             $table->nullableMorphs('journalable'); // renamed from transactionable
+
+            $table->index(['journal_id', 'date']);
+            $table->index('status');
 
             
             $table->softDeletes();
